@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { CreatePlaylistDto } from './dto/create-playlist.dto';
 import { UpdatePlaylistDto } from './dto/update-playlist.dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -33,6 +33,15 @@ export class PlaylistService {
   }
 
   async addVideoToPlaylist(data: any) {
+    const findVideo = await this.playListItemModel.findOne({
+      videoId: new Types.ObjectId(data.videoId),
+      playlistId: new Types.ObjectId(data.playlistId),
+    });
+
+    if (findVideo) {
+      throw new ConflictException('Video already found in playlist');
+    }
+
     const item = new this.playListItemModel({
       playlistId: new Types.ObjectId(data.playlistId),
       videoId: new Types.ObjectId(data.videoId),
@@ -43,7 +52,7 @@ export class PlaylistService {
 
     // fetch playlist to get deviceId
     const playlist = await this.playListModel.findById(data.playlistId);
-    console.log(playlist)
+    console.log(playlist);
 
     if (playlist?.deviceId) {
       this.deviceGateway.broadcastPlaylistUpdate(playlist.deviceId, {

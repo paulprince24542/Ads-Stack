@@ -1,18 +1,50 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { DeviceService } from './device.service';
+import { io, Socket } from "socket.io-client";
 
-describe('DeviceService', () => {
-  let service: DeviceService;
+describe("Device Socket Test", () => {
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [DeviceService],
-    }).compile();
+  let socket: Socket;
 
-    service = module.get<DeviceService>(DeviceService);
+  const DEVICE_ID = "TV-123";
+  const API_KEY =
+    "27b920feaa89977885d3980cf8205c6a1e499f8ac8059c2201ed305f529b1145";
+
+  beforeAll((done) => {
+
+    socket = io("http://localhost:4001", {
+      query: {
+        deviceId: DEVICE_ID,
+        apiKey: API_KEY
+      }
+    });
+
+    socket.on("connect", () => {
+      console.log("Test device connected:", socket.id);
+      done();
+    });
+
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
+  afterAll(() => {
+    socket.disconnect();
   });
+
+  it("should receive playlist update event", (done) => {
+
+    const timeout = setTimeout(() => {
+      done.fail("playlist_updated event not received");
+    }, 5000);
+
+    socket.once("playlist_updated", (data) => {
+
+      clearTimeout(timeout);
+
+      expect(data).toBeDefined();
+      expect(data.message).toBe("New video added to playlist");
+
+      done();
+
+    });
+
+  });
+
 });

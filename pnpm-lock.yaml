@@ -80,9 +80,6 @@ importers:
       socket.io:
         specifier: ^4.8.3
         version: 4.8.3
-      socket.io-client:
-        specifier: ^4.8.3
-        version: 4.8.3
       swagger-ui-express:
         specifier: ^5.0.1
         version: 5.0.1(express@4.21.2)
@@ -141,6 +138,9 @@ importers:
       prettier:
         specifier: ^3.0.0
         version: 3.7.4
+      socket.io-client:
+        specifier: ^4.8.3
+        version: 4.8.3
       source-map-support:
         specifier: ^0.5.21
         version: 0.5.21
