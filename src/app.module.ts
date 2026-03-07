@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { DeviceModule } from './device/device.module';
 import { PlaylistModule } from './playlist/playlist.module';
+import { VideoModule } from './video/video.module';
 
 @Module({
   imports: [
@@ -19,6 +20,8 @@ import { PlaylistModule } from './playlist/playlist.module';
     DeviceModule,
 
     PlaylistModule,
+
+    VideoModule,
   ],
   controllers: [AppController],
   providers: [AppService],

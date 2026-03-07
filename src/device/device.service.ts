@@ -13,6 +13,7 @@ import { randomBytes } from 'crypto';
 import { HeartbeatDto } from './dto/heartbeat.dto';
 import { LoginDeviceDto } from './dto/login-device.dto';
 import { Playlist } from 'src/playlist/schema/playlist.schema';
+import { PlaylistItem } from 'src/playlist/schema/playlist-item.schema';
 
 @Injectable()
 export class DeviceService {
@@ -22,6 +23,9 @@ export class DeviceService {
 
     @InjectModel(Playlist.name)
     private playlistModel: Model<Playlist>,
+
+    @InjectModel(PlaylistItem.name)
+    private playlistItemModel: Model<PlaylistItem>,
   ) {}
 
   async register(registerDeviceDto: RegisterDeviceDto) {
@@ -71,21 +75,22 @@ export class DeviceService {
   }
 
   async getPlaylist(deviceId: string) {
-    const device = await this.deviceModel.findOne({
-      deviceId,
-      // apiKey,
-      isActive: true,
-    });
+    const playlist = await this.playlistModel.findOne({ deviceId });
 
-    const playlist = await this.playlistModel.find({
-      deviceId,
-      isActive: true,
-    });
+    if (!playlist) {
+      return [];
+    }
 
-    return {
-      deviceId,
-      playlist,
-    };
+    const items = await this.playlistItemModel
+      .find({ playlistId: playlist._id })
+      .sort({ order: 1 })
+      .populate('videoId');
+
+    return items.map((item: any) => ({
+      videoUrl: item.videoId?.fileUrl,
+      duration: item.videoId?.duration,
+      title: item.videoId?.title,
+    }));
   }
 
   async validateDevice(deviceId: string, apiKey: string) {
