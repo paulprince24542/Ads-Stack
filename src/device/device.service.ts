@@ -86,10 +86,14 @@ export class DeviceService {
       .sort({ order: 1 })
       .populate('videoId');
 
+      console.log(items)
+
     return items.map((item: any) => ({
+      playlist: item.playlistId,
       videoUrl: item.videoId?.fileUrl,
       duration: item.videoId?.duration,
       title: item.videoId?.title,
+      active: item.videoId?.isActive
     }));
   }
 

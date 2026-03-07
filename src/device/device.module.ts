@@ -5,7 +5,10 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Device, DeviceSchema } from './schema/device.schema';
 import { DeviceGateway } from './device-gateway';
 import { Playlist, PlaylistSchema } from 'src/playlist/schema/playlist.schema';
-import { PlaylistItem, PlaylistItemSchema } from 'src/playlist/schema/playlist-item.schema';
+import {
+  PlaylistItem,
+  PlaylistItemSchema,
+} from 'src/playlist/schema/playlist-item.schema';
 
 @Module({
   imports: [
@@ -17,5 +20,6 @@ import { PlaylistItem, PlaylistItemSchema } from 'src/playlist/schema/playlist-i
   ],
   controllers: [DeviceController],
   providers: [DeviceService, DeviceGateway],
+  exports: [DeviceService, DeviceGateway], // important
 })
 export class DeviceModule {}

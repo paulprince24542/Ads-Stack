@@ -12,9 +12,7 @@ import { DeviceService } from './device.service';
 @WebSocketGateway({
   cors: true,
 })
-export class DeviceGateway
-  implements OnGatewayConnection, OnGatewayDisconnect
-{
+export class DeviceGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server;
 
@@ -34,6 +32,8 @@ export class DeviceGateway
     }
 
     client.data.deviceId = deviceId;
+
+    client.join(`${deviceId}`);
 
     console.log(`Device connected: ${deviceId}`);
   }
@@ -58,5 +58,11 @@ export class DeviceGateway
       event: 'heartbeat_ack',
       data: { status: 'alive' },
     };
+  }
+
+  broadcastPlaylistUpdate(deviceId: string, payload: any) {
+    console.log('Boardcast Triggered');
+    console.log(deviceId);
+    this.server.to(`${deviceId}`).emit('playlist_updated', payload);
   }
 }
