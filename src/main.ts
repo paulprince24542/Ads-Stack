@@ -6,8 +6,7 @@ import { requestIdMiddleware } from './common/middleware/request-id.middleware';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor';
 import { AllExceptionsFilter } from './common/filters/all-exception.filter';
 
-
-async function bootstrap() {
+export async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.use(requestIdMiddleware);
@@ -31,7 +30,7 @@ async function bootstrap() {
   app.enableCors();
 
   const config = new DocumentBuilder()
-    .setTitle('Aamilpro API')
+    .setTitle('ADS Stack API')
     .setDescription('Service Management APIs')
     .setVersion('1.0')
     .addBearerAuth(
@@ -47,6 +46,10 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs', app, document);
 
-  await app.listen(process.env.PORT ?? 3000);
+  if (process.env.NODE_ENV !== 'production') {
+    await app.listen(process.env.PORT ?? 3000);
+  }
+
+  return app;
 }
 bootstrap();
