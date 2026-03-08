@@ -1,6 +1,6 @@
 import { createServer } from "http";
 import express from "express";
-import { bootstrap } from "src/main";
+import { bootstrap } from "../dist/src/main";
 
 
 let cachedServer: any;
