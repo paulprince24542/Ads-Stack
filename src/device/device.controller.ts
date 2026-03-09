@@ -19,7 +19,9 @@ import { RegisterDeviceDto } from './dto/register-device.dto';
 import { HeartbeatDto } from './dto/heartbeat.dto';
 import { DeviceAuthGuard } from 'src/guards/device-guard';
 import { LoginDeviceDto } from './dto/login-device.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('device')
 @Controller('device')
 export class DeviceController {
   constructor(private readonly deviceService: DeviceService) {}
