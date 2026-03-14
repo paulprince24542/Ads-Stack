@@ -224,7 +224,7 @@ Open `.env` and update the values.
 Example:
 
 ```
-PORT=3000
+PORT=4001
 MONGO_URI=mongodb://localhost:27017/project-db
 JWT_SECRET=your-secret-key
 ```
@@ -254,19 +254,19 @@ This command will:
 Once the server starts, you should see output similar to:
 
 ```
-[Nest] Application is running on: http://localhost:3000
+[Nest] Application is running on: http://localhost:4001
 ```
 
 Open the browser and navigate to:
 
 ```
-http://localhost:3000
+http://localhost:4001
 ```
 
 If the project includes **Swagger API documentation**, it may be available at:
 
 ```
-http://localhost:3000/api
+http://localhost:4001/api
 ```
 
 ---
