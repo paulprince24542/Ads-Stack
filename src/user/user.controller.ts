@@ -15,6 +15,4 @@ import { LoginDto } from '../auth/dto/login-admin.dto';
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
-
- 
 }

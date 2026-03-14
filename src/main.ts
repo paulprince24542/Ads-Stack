@@ -38,6 +38,8 @@ export async function bootstrap() {
         type: 'http',
         scheme: 'bearer',
         bearerFormat: 'JWT',
+        name: 'Authorization',
+        in: 'header',
       },
       'access-token',
     )

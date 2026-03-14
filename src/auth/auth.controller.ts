@@ -10,15 +10,18 @@ import {
   Req,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
+
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginDto } from './dto/login-admin.dto';
 import { JwtAuthGuard } from './guard/jwt-auth.guard';
+import { ApiBearerAuth } from '@nestjs/swagger';
+// import { PinoLogger } from 'nestjs-pino';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService,
+    // private readonly logger: PinoLogger
+  ) {}
 
   @Post('create')
   create(@Body() createUserDto: CreateUserDto) {
@@ -31,15 +34,18 @@ export class AuthController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
   @Get('profile')
   getProfile() {
     return 'Authorized';
   }
 
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
   @Get('test')
   test(@Req() req: Request) {
     console.log('Authorization Header:', req.headers);
+    // this.logger.info('Grafana test log');
     return 'Check console';
   }
 }
